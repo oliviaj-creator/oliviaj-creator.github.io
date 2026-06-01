@@ -548,15 +548,29 @@
       .contact-grid { grid-template-columns: 1fr; gap: 44px; }
       .stats-bar .container { grid-template-columns: repeat(3, 1fr); }
       .skills-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid .btn { display: flex; justify-content: center; }
     }
     @media (max-width: 600px) {
-      .pad { padding: 72px 24px; }
-      .stats-bar, .footer { padding-left: 24px; padding-right: 24px; }
+      .pad { padding: 72px 20px; }
+      .hero { padding: 120px 20px 90px; }
+      .stats-bar { padding: 0; }
+      .footer { padding: 28px 20px; flex-direction: column; gap: 12px; text-align: center; }
       .stats-bar .container { grid-template-columns: repeat(2, 1fr); }
-      .stat:nth-child(5) { grid-column: 1 / -1; border-right: none; border-top: 1px solid var(--border); }
+      .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+      .stat:nth-child(2n) { border-right: none; }
+      .stat:nth-child(5) { grid-column: 1 / -1; border-right: none; }
       .skills-grid { grid-template-columns: 1fr; }
-      .h-name { letter-spacing: 0.12em; }
-      .footer { flex-direction: column; gap: 12px; text-align: center; }
+      /* hero text — prevent overflow on narrow screens */
+      .h-name { letter-spacing: 0.08em; }
+      .h-sub { letter-spacing: 2px; font-size: 10px; }
+      .h-loc { letter-spacing: 1.5px; }
+      /* stack hero buttons full-width and centered */
+      .h-actions { flex-direction: column; align-items: center; gap: 12px; }
+      .h-actions .btn { width: 100%; max-width: 300px; justify-content: center; }
+      /* contact section download button */
+      .contact-grid .btn { width: 100%; justify-content: center; }
+      /* prevent long email from overflowing */
+      .c-val { word-break: break-all; font-size: 13px; }
     }
   </style>
 </head>
