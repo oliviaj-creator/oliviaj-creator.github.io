@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olivia Jackson — Actress & Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #070707;
+      --surface:    #0f0f0f;
+      --surface2:   #171717;
+      --gold:       #c9a96e;
+      --gold-light: #e4d0a8;
+      --gold-dim:   rgba(201,169,110,0.1);
+      --text:       #ede8de;
+      --muted:      #666;
+      --border:     rgba(201,169,110,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(201,169,110,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,169,110,0.018) 1px, transparent 1px);
+      background-size: 72px 72px;
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── FILM GRAIN ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1160px; margin: 0 auto; }
+    .pad { padding: 112px 48px; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 30px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.5s ease, padding 0.4s ease;
+    }
+    .nav.stuck {
+      background: rgba(7,7,7,0.93);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 48px;
+    }
+    .nav-brand {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 9px;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 34px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links .nav-dl {
+      padding: 9px 22px;
+      border: 1px solid rgba(201,169,110,0.35);
+      color: var(--gold);
+    }
+    .nav-links .nav-dl:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      position: relative;
+      padding: 140px 48px 110px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 65% 65% at 50% 48%,
+          rgba(201,169,110,0.07) 0%, transparent 65%);
+      animation: glowPulse 7s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .hero-wm {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(180px, 30vw, 420px);
+      font-weight: 300;
+      color: rgba(201,169,110,0.028);
+      letter-spacing: 0.3em;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+
+    .h-eyebrow {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 6px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 34px;
+      opacity: 0;
+      animation: rise 1s 0.2s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .h-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(60px, 11vw, 150px);
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: rise 1.2s 0.35s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .h-rule {
+      width: 96px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 28px;
+      opacity: 0;
+      animation: rise 1s 0.55s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .h-sub {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 7px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+      opacity: 0;
+      animation: rise 1s 0.65s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .h-loc {
+      font-size: 12px; letter-spacing: 3px;
+      color: var(--muted); margin-bottom: 46px;
+      opacity: 0;
+      animation: rise 1s 0.75s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .h-flags {
+      display: flex; gap: 14px;
+      justify-content: center; margin-bottom: 50px;
+      opacity: 0;
+      animation: rise 1s 0.88s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .h-flags span {
+      font-size: 30px;
+      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.55));
+      transition: transform 0.22s;
+      cursor: default;
+    }
+    .h-flags span:hover { transform: scale(1.18) translateY(-3px); }
+    .h-actions {
+      display: flex; gap: 16px;
+      justify-content: center; flex-wrap: wrap;
+      opacity: 0;
+      animation: rise 1s 1.0s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 40px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-gold { background: var(--gold); color: #060606; }
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 38px rgba(201,169,110,0.32);
+    }
+    .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+    .btn-outline:hover {
+      background: var(--gold-dim);
+      transform: translateY(-3px);
+    }
+
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 42px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      opacity: 0;
+      animation: rise 1s 1.35s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .sh-text { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+    .sh-line {
+      width: 1px; height: 54px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      transform-origin: top;
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      overflow: hidden;
+      background: var(--gold);
+      padding: 11px 0;
+      white-space: nowrap;
+    }
+    .ticker-track {
+      display: inline-block;
+      animation: tickMove 22s linear infinite;
+    }
+    .ticker-track span {
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 3.5px; text-transform: uppercase;
+      color: #060606;
+      padding: 0 22px;
+    }
+    .ticker-track .sep { color: rgba(0,0,0,0.28); padding: 0; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+    }
+    .stats-bar .container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .stat {
+      padding: 42px 20px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .stat:last-child { border-right: none; }
+    .stat:hover { background: var(--surface2); }
+    .stat-val {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 33px; font-weight: 400;
+      color: var(--gold); display: block;
+      margin-bottom: 8px; line-height: 1;
+    }
+    .stat-key {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .label-tag {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px; display: block;
+    }
+    .display {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 300; letter-spacing: 0.02em;
+      line-height: 1.08; margin-bottom: 56px;
+    }
+    .display em { font-style: italic; color: var(--gold); }
+    .body-text {
+      font-size: 16.5px; font-weight: 300;
+      line-height: 1.95; color: var(--text);
+      margin-bottom: 22px;
+    }
+    .body-text .hl {
+      font-family: 'Cormorant Garant', serif;
+      font-style: italic; font-size: 20px;
+      color: var(--gold);
+    }
+
+    .citizen-stack { display: flex; flex-direction: column; gap: 13px; }
+    .c-card {
+      display: flex; align-items: center;
+      gap: 18px; padding: 20px 24px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.35s;
+      cursor: default;
+    }
+    .c-card:hover {
+      border-color: rgba(201,169,110,0.45);
+      background: var(--surface2);
+      transform: translateX(8px);
+    }
+    .c-flag { font-size: 26px; line-height: 1; }
+    .c-name {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text); margin-bottom: 3px;
+    }
+    .c-status { font-size: 12px; color: var(--muted); }
+
+    .contact-mini {
+      margin-top: 24px;
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .contact-mini-label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px; display: block;
+    }
+    .contact-mini p {
+      font-size: 14px; color: var(--muted);
+      line-height: 1.75;
+    }
+    .contact-mini a {
+      color: var(--muted); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .contact-mini a:hover { color: var(--gold); }
+
+    /* ── TRAINING / EDUCATION ── */
+    .te-bg {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .te-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .col-head {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 34px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline { position: relative; padding-left: 34px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 6px;
+      width: 1px; height: calc(100% - 6px);
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .tl-dot {
+      position: absolute;
+      left: -38px; top: 5px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.13), 0 0 14px rgba(201,169,110,0.38);
+    }
+    .tl-entry { position: relative; }
+    .tl-date {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
+    }
+    .tl-org {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 30px; font-weight: 400;
+      color: var(--text); line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .tl-sub {
+      font-family: 'Cormorant Garant', serif;
+      font-style: italic; font-size: 16px;
+      color: var(--gold-light); margin-bottom: 12px;
+    }
+    .tl-desc { font-size: 14px; color: var(--muted); line-height: 1.85; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .s-tile {
+      background: var(--bg);
+      padding: 32px 26px;
+      display: flex; gap: 18px;
+      align-items: flex-start;
+      transition: background 0.3s;
+    }
+    .s-tile:hover { background: var(--surface); }
+    .s-icon {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      flex-shrink: 0; font-size: 17px;
+      transition: border-color 0.3s;
+    }
+    .s-tile:hover .s-icon { border-color: rgba(201,169,110,0.38); }
+    .s-name {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .s-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── CONTACT ── */
+    .contact-bg {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .contact-h {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(42px, 6vw, 82px);
+      font-weight: 300; line-height: 1.08;
+      margin-bottom: 20px;
+    }
+    .contact-h em { font-style: italic; color: var(--gold); }
+    .contact-blurb { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 34px; }
+
+    .c-links { display: flex; flex-direction: column; gap: 13px; }
+    .c-link {
+      display: flex; align-items: center;
+      gap: 20px; padding: 22px 24px;
+      border: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      transition: all 0.35s;
+    }
+    .c-link:hover {
+      border-color: rgba(201,169,110,0.45);
+      background: var(--surface2);
+      transform: translateX(8px);
+    }
+    .c-ico { font-size: 18px; width: 24px; text-align: center; color: var(--gold); flex-shrink: 0; }
+    .c-lbl {
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 4px;
+    }
+    .c-val { font-size: 15px; font-weight: 400; }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .f-brand {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 19px; font-weight: 300;
+      letter-spacing: 7px; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .f-copy {
+      font-size: 10px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .fu {
+      opacity: 0;
+      transform: translateY(30px);
+      transition:
+        opacity 0.75s cubic-bezier(.16,1,.3,1),
+        transform 0.75s cubic-bezier(.16,1,.3,1);
+    }
+    .fu.in { opacity: 1; transform: translateY(0); }
+
+    /* ── KEYFRAMES ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glowPulse {
+      from { opacity: 0.6; }
+      to   { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50%       { opacity: 0.3; transform: scaleY(0.42); }
+    }
+    @keyframes tickMove {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .about-grid,
+      .te-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 44px; }
+      .stats-bar .container { grid-template-columns: repeat(3, 1fr); }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .pad { padding: 72px 24px; }
+      .stats-bar, .footer { padding-left: 24px; padding-right: 24px; }
+      .stats-bar .container { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(5) { grid-column: 1 / -1; border-right: none; border-top: 1px solid var(--border); }
+      .skills-grid { grid-template-columns: 1fr; }
+      .h-name { letter-spacing: 0.12em; }
+      .footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ════════════════════════════════════════════ NAV -->
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-brand">O &nbsp;·&nbsp; J</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#training">Training</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="revised_resume.pdf" download class="nav-dl">Resume ↓</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════════════════ HERO -->
+<section class="hero" id="top">
+  <div class="hero-wm" aria-hidden="true">OJ</div>
+  <div class="hero-inner">
+    <p class="h-eyebrow">Actress &amp; Model</p>
+    <h1 class="h-name">Olivia<br>Jackson</h1>
+    <div class="h-rule"></div>
+    <p class="h-sub">Film &nbsp;·&nbsp; Television &nbsp;·&nbsp; Commercial</p>
+    <p class="h-loc">New York, NY &nbsp;·&nbsp; Toronto, ON</p>
+    <div class="h-flags">
+      <span title="United States">🇺🇸</span>
+      <span title="Canada">🇨🇦</span>
+      <span title="United Kingdom">🇬🇧</span>
+    </div>
+    <div class="h-actions">
+      <a href="#contact" class="btn btn-gold">Get In Touch</a>
+      <a href="revised_resume.pdf" download class="btn btn-outline">Download Resume ↓</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span class="sh-text">Scroll</span>
+    <div class="sh-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Film</span><span class="sep">·</span>
+    <span>Television</span><span class="sep">·</span>
+    <span>Commercial</span><span class="sep">·</span>
+    <span>Print</span><span class="sep">·</span>
+    <span>New York</span><span class="sep">·</span>
+    <span>Toronto</span><span class="sep">·</span>
+    <span>London</span><span class="sep">·</span>
+    <span>On-Camera</span><span class="sep">·</span>
+    <span>Triple Citizen</span><span class="sep">·</span>
+    <span>Film</span><span class="sep">·</span>
+    <span>Television</span><span class="sep">·</span>
+    <span>Commercial</span><span class="sep">·</span>
+    <span>Print</span><span class="sep">·</span>
+    <span>New York</span><span class="sep">·</span>
+    <span>Toronto</span><span class="sep">·</span>
+    <span>London</span><span class="sep">·</span>
+    <span>On-Camera</span><span class="sep">·</span>
+    <span>Triple Citizen</span><span class="sep">·</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ STATS -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stat fu"><span class="stat-val">5′ 7″</span><span class="stat-key">Height</span></div>
+    <div class="stat fu" style="transition-delay:.07s"><span class="stat-val">120</span><span class="stat-key">Weight lbs</span></div>
+    <div class="stat fu" style="transition-delay:.14s"><span class="stat-val">Blonde</span><span class="stat-key">Hair</span></div>
+    <div class="stat fu" style="transition-delay:.21s"><span class="stat-val">Green</span><span class="stat-key">Eyes</span></div>
+    <div class="stat fu" style="transition-delay:.28s"><span class="stat-val">16 – 23</span><span class="stat-key">Playing Age</span></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ ABOUT -->
+<section class="pad" id="about">
+  <div class="container">
+    <span class="label-tag fu">About</span>
+    <h2 class="display fu" style="transition-delay:.06s">A Story Worth<br><em>Telling</em></h2>
+    <div class="about-grid">
+      <div>
+        <p class="body-text fu">
+          <span class="hl">NYC and Toronto-based actress and model</span>, Olivia Jackson
+          brings a rare versatility to every role — moving effortlessly between
+          vulnerability, wit, and quiet strength. With a playing age of 16–23,
+          she inhabits the full emotional spectrum of young adult experience.
+        </p>
+        <p class="body-text fu" style="transition-delay:.1s">
+          Pursuing an Honours B.Sc. in Chemistry at the University of Toronto —
+          with minors in Biology and Mathematics — Olivia brings analytical
+          discipline and intellectual precision to her craft. The rigor of science
+          and the instinct of performance are two sides of the same coin.
+        </p>
+        <p class="body-text fu" style="transition-delay:.18s">
+          Her triple citizenship and command of American, Canadian, and British accents
+          make her a uniquely flexible collaborator for productions on either side of
+          the Atlantic — and everywhere in between.
+        </p>
+      </div>
+      <div>
+        <div class="citizen-stack fu" style="transition-delay:.24s">
+          <div class="c-card">
+            <span class="c-flag">🇺🇸</span>
+            <div>
+              <div class="c-name">United States</div>
+              <div class="c-status">Full work authorization · New York, NY</div>
+            </div>
+          </div>
+          <div class="c-card">
+            <span class="c-flag">🇨🇦</span>
+            <div>
+              <div class="c-name">Canada</div>
+              <div class="c-status">Full work authorization · Toronto, ON</div>
+            </div>
+          </div>
+          <div class="c-card">
+            <span class="c-flag">🇬🇧</span>
+            <div>
+              <div class="c-name">United Kingdom</div>
+              <div class="c-status">Full work authorization · Triple citizen</div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-mini fu" style="transition-delay:.32s">
+          <span class="contact-mini-label">Direct Contact</span>
+          <p>
+            <a href="mailto:oliviajackson7862@gmail.com">oliviajackson7862@gmail.com</a><br>
+            <a href="tel:+12019372137">201-937-2137</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ TRAINING & EDUCATION -->
+<div class="te-bg pad" id="training">
+  <div class="container">
+    <span class="label-tag fu">Background</span>
+    <h2 class="display fu" style="transition-delay:.06s">Training &amp;<br>Education</h2>
+    <div class="te-grid">
+
+      <div class="fu" style="transition-delay:.12s">
+        <div class="col-head">Training</div>
+        <div class="timeline">
+          <div class="tl-entry">
+            <div class="tl-dot"></div>
+            <div class="tl-date">2025 – 2026 &nbsp;·&nbsp; Toronto, ON</div>
+            <div class="tl-org">LB Acting Studio</div>
+            <div class="tl-sub">Acting for Beginners &amp; Continuation · The Actor's Gym</div>
+            <div class="tl-desc">
+              Intensive on-camera training for film and television: script analysis,
+              character study, and scene work. Developing a grounded, truthful technique
+              built for the intimacy of the screen — present, specific, and alive.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fu" style="transition-delay:.22s">
+        <div class="col-head">Education</div>
+        <div class="timeline">
+          <div class="tl-entry">
+            <div class="tl-dot"></div>
+            <div class="tl-date">2023 – 2027 &nbsp;·&nbsp; Toronto, ON</div>
+            <div class="tl-org">University of Toronto</div>
+            <div class="tl-sub">Honours B.Sc. · Chemistry · Minors in Biology &amp; Mathematics</div>
+            <div class="tl-desc">
+              A rigorous academic foundation cultivating analytical thinking,
+              structured problem-solving, and an eye for precision — qualities
+              that translate directly into a disciplined, thoughtful approach to performance.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ SKILLS -->
+<section class="pad" id="skills">
+  <div class="container">
+    <span class="label-tag fu">Capabilities</span>
+    <h2 class="display fu" style="transition-delay:.06s">Special<br>Skills</h2>
+    <div class="skills-grid">
+      <div class="s-tile fu">
+        <div class="s-icon">🎭</div>
+        <div><div class="s-name">Accents</div><div class="s-desc">General American · Canadian · General British</div></div>
+      </div>
+      <div class="s-tile fu" style="transition-delay:.06s">
+        <div class="s-icon">🗣</div>
+        <div><div class="s-name">Spanish</div><div class="s-desc">Biliterate — fluent read &amp; write</div></div>
+      </div>
+      <div class="s-tile fu" style="transition-delay:.12s">
+        <div class="s-icon">📷</div>
+        <div><div class="s-name">Photography</div><div class="s-desc">DSLR &amp; 35 mm analogue film</div></div>
+      </div>
+      <div class="s-tile fu" style="transition-delay:.18s">
+        <div class="s-icon">🏊</div>
+        <div><div class="s-name">Swimming</div><div class="s-desc">Strong proficient swimmer</div></div>
+      </div>
+      <div class="s-tile fu" style="transition-delay:.24s">
+        <div class="s-icon">🎱</div>
+        <div><div class="s-name">Billiards</div><div class="s-desc">Skilled player</div></div>
+      </div>
+      <div class="s-tile fu" style="transition-delay:.30s">
+        <div class="s-icon">🎣</div>
+        <div><div class="s-name">Fishing</div><div class="s-desc">Proficient</div></div>
+      </div>
+      <div class="s-tile fu" style="transition-delay:.36s">
+        <div class="s-icon">🎸</div>
+        <div><div class="s-name">Guitar</div><div class="s-desc">Basic / beginner level</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ CONTACT -->
+<div class="contact-bg pad" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <span class="label-tag fu">Contact</span>
+        <h2 class="contact-h fu" style="transition-delay:.06s">
+          Let's<br><em>Work<br>Together</em>
+        </h2>
+        <p class="contact-blurb fu" style="transition-delay:.12s">
+          Available for film, television, commercial, and print projects
+          across the United States, Canada, and United Kingdom.
+        </p>
+        <a href="revised_resume.pdf" download class="btn btn-gold fu" style="transition-delay:.18s">
+          Download Resume ↓
+        </a>
+      </div>
+      <div class="c-links">
+        <a href="mailto:oliviajackson7862@gmail.com" class="c-link fu">
+          <span class="c-ico">✉</span>
+          <div><div class="c-lbl">Email</div><div class="c-val">oliviajackson7862@gmail.com</div></div>
+        </a>
+        <a href="tel:+12019372137" class="c-link fu" style="transition-delay:.09s">
+          <span class="c-ico">☎</span>
+          <div><div class="c-lbl">Phone</div><div class="c-val">201-937-2137</div></div>
+        </a>
+        <div class="c-link fu" style="transition-delay:.18s">
+          <span class="c-ico">📍</span>
+          <div><div class="c-lbl">Locations</div><div class="c-val">New York, NY &nbsp;·&nbsp; Toronto, ON</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ FOOTER -->
+<footer class="footer">
+  <div class="f-brand">Olivia Jackson</div>
+  <div class="f-copy">Actress &amp; Model &nbsp;·&nbsp; NYC &nbsp;·&nbsp; Toronto &nbsp;·&nbsp; London</div>
+</footer>
+
+<script>
+  // Sticky nav
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('stuck', window.scrollY > 50);
+  }, { passive: true });
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
